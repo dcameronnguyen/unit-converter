@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { Picker } from '@react-native-community/picker';
@@ -11,23 +11,18 @@ const measures = convert().measures();
 const MeasureView = ({ measure }) => {
   const units = convert().possibilities(measure);
   const [fromUnit, setFromUnit] = useState(units[0]);
+  const [toUnit, setToUnit] = useState(units[1]);
   const [value, setValue] = useState('0');
+  const [valueConverted, setValueConverted] = useState(0);
+
+  useEffect(() => {
+    setValueConverted(convert(+value).from(fromUnit).to(toUnit).toFixed(2))
+  }, [value, fromUnit, toUnit])
 
   return (
     <View style={styles.scene}>
+
       <View style={styles.row}>
-        <Picker
-          style={styles.column}
-          selectedValue={fromUnit}
-          onValueChange={setFromUnit}
-        >
-          {units.map((unit, index) => (
-            <Picker.Item label={unit}
-              value={unit}
-              key={index}
-            />
-          ))}
-        </Picker>
         <View style={styles.column}>
           <TextInput
             value={value}
@@ -36,7 +31,39 @@ const MeasureView = ({ measure }) => {
             style={styles.input}
           />
         </View>
+
+        <Picker
+          style={styles.column}
+          selectedValue={fromUnit}
+          onValueChange={setFromUnit} >
+          {units.map((unit, index) => (
+            <Picker.Item label={unit}
+              value={unit}
+              key={index}
+            />
+          ))}
+        </Picker>
       </View>
+
+
+      <View style={styles.row}>
+        <View style={styles.column}>
+          <Text style={[styles.output, { fontSize: 35, fontWeight: 'bold' }]}>{valueConverted}</Text>
+        </View>
+
+        <Picker
+          style={styles.column}
+          selectedValue={toUnit}
+          onValueChange={setToUnit} >
+          {units.map((unit, index) => (
+            <Picker.Item label={unit}
+              value={unit}
+              key={index}
+            />
+          ))}
+        </Picker>
+      </View>
+
     </View>
   )
 }
@@ -90,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 10,
   },
   column: {
     flex: 1,
@@ -103,4 +131,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
   },
+  output: {
+    height: 40,
+    textAlign: 'center',
+  }
 });
