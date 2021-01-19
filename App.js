@@ -1,27 +1,48 @@
-import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
+import { Picker } from '@react-native-community/picker';
 import convert from 'convert-units';
 import Constants from 'expo-constants';
 
 const measures = convert().measures();
 
 const MeasureView = ({ measure }) => {
-  const units = convert().possibilities(measure)
+  const units = convert().possibilities(measure);
+  const [fromUnit, setFromUnit] = useState(units[0]);
+  const [value, setValue] = useState('0');
+
   return (
     <View style={styles.scene}>
       <View style={styles.row}>
-
+        <Picker
+          style={styles.column}
+          selectedValue={fromUnit}
+          onValueChange={setFromUnit}
+        >
+          {units.map((unit, index) => (
+            <Picker.Item label={unit}
+              value={unit}
+              key={index}
+            />
+          ))}
+        </Picker>
+        <View style={styles.column}>
+          <TextInput
+            value={value}
+            onChangeText={setValue}
+            keyboardType="numeric"
+            style={styles.input}
+          />
+        </View>
       </View>
-      <Text>{measure}</Text>
     </View>
   )
 }
 
 function unCamelCase(value) {
-  return value.replace(/([A-Z])/g, ' $1')
+  return value.replace(/([A-Z])/g, ' $1');
 }
 
 export default function App() {
@@ -64,5 +85,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     textTransform: 'uppercase',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  column: {
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: 'dodgerblue',
+    borderBottomWidth: 1,
+    fontSize: 30,
+    textAlign: 'center',
   },
 });
