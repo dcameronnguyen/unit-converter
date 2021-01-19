@@ -8,11 +8,10 @@ import Constants from 'expo-constants';
 
 const measures = convert().measures();
 
-const MeasureView = ({ measure }) => {
+const MeasureView = ({ measure, value, setValue }) => {
   const units = convert().possibilities(measure);
   const [fromUnit, setFromUnit] = useState(units[0]);
   const [toUnit, setToUnit] = useState(units[1]);
-  const [value, setValue] = useState('0');
   const [valueConverted, setValueConverted] = useState(0);
 
   useEffect(() => {
@@ -75,9 +74,10 @@ function unCamelCase(value) {
 export default function App() {
   const [index, setIndex] = useState(0);
   const [routes] = useState(measures.map(m => ({ key: m, title: unCamelCase(m) })))
+  const [value, setValue] = useState('0');
 
   const renderScene = ({ route }) => {
-    return <MeasureView measure={route.key} />
+    return <MeasureView measure={route.key} value={value} setValue={setValue} />
   }
 
   return (
