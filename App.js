@@ -5,6 +5,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import { Picker } from '@react-native-community/picker';
 import convert from 'convert-units';
 import Constants from 'expo-constants';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 const measures = convert().measures();
 
@@ -43,6 +44,13 @@ const MeasureView = ({ measure, value, setValue }) => {
           ))}
         </Picker>
       </View>
+
+      <SimpleLineIcons
+        name='arrow-down-circle'
+        size={40}
+        color={'dodgerblue'}
+        style={{ alignSelf: 'center'}}
+      />
 
 
       <View style={styles.row}>
