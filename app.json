@@ -5,7 +5,7 @@
     "description": "A basic react-native app that uses expo and other react libraries that converts a user input unit to unit of choice. Large variety of units to choose from.",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcon.PNG",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
