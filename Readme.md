@@ -23,3 +23,7 @@ A basic react-native app that uses expo and other react libraries that converts 
 ## Actual App
 
 ![wireframe](./images/projectimg.jpg)
+
+## Getting Started
+
+[Click Here](https://expo.io/@cameron2/projects/unit-converter) to see the expo app page!
