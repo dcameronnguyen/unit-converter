@@ -1,83 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { Picker } from '@react-native-community/picker';
 import convert from 'convert-units';
 import Constants from 'expo-constants';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import MeasureView from './components/MeasureView/MeasureView';
+
 
 const measures = convert().measures();
-
-const MeasureView = ({ measure, value, setValue }) => {
-  const units = convert().possibilities(measure);
-  const [fromUnit, setFromUnit] = useState(units[0]);
-  const [toUnit, setToUnit] = useState(units[1]);
-  const [valueConverted, setValueConverted] = useState(0);
-
-  useEffect(() => {
-    setValueConverted(convert(+value).from(fromUnit).to(toUnit).toFixed(2))
-  }, [value, fromUnit, toUnit])
-
-  return (
-    <View style={styles.scene}>
-
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <TextInput
-            value={value}
-            onChangeText={setValue}
-            keyboardType="numeric"
-            style={styles.input}
-          />
-        </View>
-
-        <Picker
-          style={styles.column}
-          selectedValue={fromUnit}
-          onValueChange={setFromUnit} >
-          {units.map((unit, index) => (
-            <Picker.Item label={unit}
-              value={unit}
-              key={index}
-            />
-          ))}
-        </Picker>
-      </View>
-
-      <SimpleLineIcons
-        name='arrow-down-circle'
-        size={40}
-        color={'dodgerblue'}
-        style={{ alignSelf: 'center'}}
-      />
-
-
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={[styles.output, { fontSize: 35, fontWeight: 'bold' }]}>{valueConverted}</Text>
-        </View>
-
-        <Picker
-          style={styles.column}
-          selectedValue={toUnit}
-          onValueChange={setToUnit} >
-          {units.map((unit, index) => (
-            <Picker.Item label={unit}
-              value={unit}
-              key={index}
-            />
-          ))}
-        </Picker>
-      </View>
-
-    </View>
-  )
-}
 
 function unCamelCase(value) {
   return value.replace(/([A-Z])/g, ' $1');
 }
-
 export default function App() {
   const [index, setIndex] = useState(0);
   const [routes] = useState(measures.map(m => ({ key: m, title: unCamelCase(m) })))
@@ -89,7 +22,7 @@ export default function App() {
 
   return (
     <View style={[styles.scene, { marginTop: Constants.statusBarHeight }]}>
-      <Text style={styles.title}> Unit Converter</Text>
+      <Text style={styles.title}> Unit Converter </Text>
       <TabView navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
